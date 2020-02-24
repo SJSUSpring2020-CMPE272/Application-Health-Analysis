@@ -1,21 +1,7 @@
 # ProjectGroup-15
 
-## Project Idea-1 
 
-###### Title: Applications Health Analysis. 
-
-###### Idea Description: 
-Application to log all the success and failures of all applications and analyzing the health of the main Application with their dependent applications of a Major Application. 
-
-###### Goal of the project: 
-Any Major application which will be formed by a different set of micro services, so there will be many inter dependent API’s which will be failing due to many issues. Applications Health Analysis will give the detail a report of what are the API’s which are failing with frequency and dependent API’s which are getting effected by the failed API’s. Notifying all the failed API’s contacts based on the frequency. 
-
-###### Technology stack:
-AWS, Splunk, Java Spring, HTML/CSS 
-
- 
-
-## Project Idea – 2 
+## Project Idea – 1
 
 ###### Title: 
 Project Management and Risk Predictor 
@@ -28,3 +14,30 @@ This application will help Students and individuals working on personal projects
 
 ###### Technology Stack: 
 React JS, Redux, Node JS, Mongo DB, AWS 
+
+
+## Project Idea-2
+
+###### Title: Applications Health Analysis. 
+
+###### Idea Description: 
+Application to log all the success and failures of all applications and analyzing the health of the main Application with their dependent applications of a Major Application. 
+
+###### Goal of the project: 
+Any Major application which will be formed by a different set of micro services, so there will be many inter dependent API’s which will be failing due to many issues. Applications Health Analysis will give the detail a report of what are the API’s which are failing with frequency and dependent API’s which are getting effected by the failed API’s. Notifying all the failed API’s contacts based on the frequency. 
+
+###### Technology stack:
+AWS, Splunk, Java Spring, HTML/CSS 
+
+
+## Project Idea – 3
+
+###### Title:
+Math Made Easy
+###### Idea Description:
+Idea of the project is to evaluate handwritten mathematical expressions by identifying them using deep learning and to provide a stepwise solution to the user. 
+###### Goal: 
+Handwritten digit recognition- a mix of deep learning and neural networking is used to identify the handwritten digits. It is the ability of computers to recognize human handwritten digits. It is a hard task for the machine as handwritten digits and math expressions are not perfect and can be made with many different flavors. Our application simplifies the problem by using the image of the math expression. It recognizes each literal present in the image and then evaluates it. Moreover, a step wise approach that brings out the solution will be presented for a better understanding of how the problem is evaluated.
+
+###### Technologies: 
+REACT, NODEJS, AWS, Python
