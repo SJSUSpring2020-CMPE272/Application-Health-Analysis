@@ -19,6 +19,7 @@ React JS, Redux, Node JS, Mongo DB, AWS
 ## Project Idea-2
 
 ###### Title: Applications Health Analysis. 
+# Approved
 
 ###### Idea Description: 
 Application to log all the success and failures of all applications and analyzing the health of the main Application with their dependent applications of a Major Application. This will aid in troubleshooting and and fixing the issues arising in the deployments and will help in fixing the issues with microservices which are failing frequently due to which a lot of man hours are wasted in indentifying the root cause of the failure.
