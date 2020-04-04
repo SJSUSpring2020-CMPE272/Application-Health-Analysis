@@ -1,9 +1,9 @@
 # Project Group-15
 
 ### Team
-Vamsi Mundra
-Akhil Reddy Mandadi
-Jagan Gadamsetty
+Vamsi Mundra, 
+Akhil Reddy Mandadi, 
+Jagan Gadamsetty, 
 Srinivas Rao Samudrala
 
 # Applications Health Analysis. 
@@ -15,7 +15,7 @@ Application to log all the success and failures of all applications and analyzin
 Any Major application which will be formed by a different set of micro services, so there will be many inter dependent API’s which will be failing due to many issues. Applications Health Analysis will give the detail a report of what are the API’s which are failing with frequency and dependent API’s which are getting effected by the failed API’s. Notifying all the failed API’s contacts based on the frequency. By which which we can indetify the issues mainly in the production environements where a single failure of an API will cause a feature to break. We can also track the modules of the product which are failing frequently and take necessary actions on it and testing them thouroughly before releasing them. 
 
 ###### Technology stack:
-AWS, Splunk, Java Spring, HTML/CSS 
+AWS, Splunk/Greylog, React JS, Node JS, HTML/CSS 
 
 # Architecture
 ![Architecture](architecture-diagram.png)
