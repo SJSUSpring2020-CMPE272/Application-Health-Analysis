@@ -18,4 +18,4 @@ Any Major application which will be formed by a different set of micro services,
 AWS, Splunk, Java Spring, HTML/CSS 
 
 # Architecture
-![Architecture](architecture-diagram.png.png)
+![Architecture](architecture-diagram.png)
