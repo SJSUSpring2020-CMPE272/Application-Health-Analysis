@@ -1,5 +1,11 @@
 # Project Group-15
 
+### Team
+Vamsi Mundra
+Akhil Reddy Mandadi
+Jagan Gadamsetty
+Srinivas Rao Samudrala
+
 # Applications Health Analysis. 
 
 ###### Idea Description: 
@@ -11,3 +17,5 @@ Any Major application which will be formed by a different set of micro services,
 ###### Technology stack:
 AWS, Splunk, Java Spring, HTML/CSS 
 
+# Architecture
+![Architecture](architecture-diagram.png.png)
