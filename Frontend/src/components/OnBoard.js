@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import TablePagination from '@material-ui/core/TablePagination';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import BugReportIcon from '@material-ui/icons/BugReport';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -15,8 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import CloseIcon from '@material-ui/icons/Close';
 import BlurOnIcon from '@material-ui/icons/BlurOn';
-import CancelIcon from '@material-ui/icons/Cancel';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import _ from 'lodash';
 import '../App.css';
@@ -42,7 +35,6 @@ class OnBoardApp extends Component {
         }
     }
     componentDidMount() {
-        this.saveHandler()
     }
 
     setCurrentIndex = (index) => {
