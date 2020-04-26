@@ -8,13 +8,14 @@ const applicationSchema = new Schema({
         auto: true
     },
     name: { type: String, required: true },
+    key: { type: String, required: true },
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies" },
     splunk: {
         username: { type: String, required: true },
         password: { type: String, required: true },
         host: { type: String, required: true },
         port: { type: String, required: true },
-        protocol: { type: String, required: true }
+        scheme: { type: String, required: true }
     }
 }, { collection: 'applications' });
 

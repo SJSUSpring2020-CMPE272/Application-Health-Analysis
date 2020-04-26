@@ -20,10 +20,14 @@ app.use((req, res, next) => {
 const connection = require('./db/connection');
 const auth = require('./routes/routes')
 const onboard = require('./routes/onboard');
+const application = require('./db/schema/application').createModel();
+const microservice = require('./db/schema/microservice').createModel();
 
 async function initializeApplication() {
   try {
     await connection.createConnection();
+    application.createCollection();
+    microservice.createCollection();
     app.use(auth)
     app.use(onboard)
     app.listen(process.env.PORT || 8080, () => {

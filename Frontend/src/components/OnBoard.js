@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -11,6 +11,7 @@ import Chip from '@material-ui/core/Chip';
 import CloseIcon from '@material-ui/icons/Close';
 import BlurOnIcon from '@material-ui/icons/BlurOn';
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import Loading from './loading';
 import _ from 'lodash';
 import '../App.css';
 
@@ -31,7 +32,10 @@ class OnBoardApp extends Component {
             port: "",
             protocol: "",
             connectionCheck: (<span><b style={{ color: "teal", fontSize: "12px" }}>Not Verified</b></span>),
-            connectionVerified: false
+            connectionVerified: false,
+            loading: false,
+            loadingText: "",
+            success: false
         }
     }
     componentDidMount() {
@@ -118,6 +122,18 @@ class OnBoardApp extends Component {
                     connectionVerified: false
                 })
             });
+    }
+
+    validateDetails = () => {
+        if (this.state.activeStep === 0) {
+            return this.state.application === "" || this.state.applicationKey === ""
+        }
+        if (this.state.activeStep === 1) {
+            return _.isEmpty(this.state.microservices)
+        }
+        if (this.state.activeStep === 3) {
+            return !this.state.connectionVerified
+        }
     }
 
     getStepContent(stepIndex) {
@@ -365,9 +381,47 @@ class OnBoardApp extends Component {
     }
 
     handleNext = () => {
-        this.setState({
-            activeStep: this.state.activeStep + 1
-        })
+        if (this.state.activeStep === 4) {
+            this.setState({
+                loading: true,
+                loadingText: "On-Boarding Your Application..."
+            })
+            const data = {
+                "name": this.state.application,
+                "key": this.state.applicationKey.toUpperCase(),
+                "splunk": {
+                    "username": this.state.username,
+                    "password": this.state.password,
+                    "scheme": this.state.protocol,
+                    "host": this.state.host,
+                    "port": this.state.port
+                },
+                "companyId": sessionStorage.getItem("id"),
+                "dependencies": this.state.dependencies
+            }
+            let url = process.env.REACT_APP_BACKEND_URL + '/onboard';
+            axios.post(url, data)
+                .then(response => {
+                    if (response.status === 200) {
+                        this.setState({
+                            loading: false,
+                            loadingText: "",
+                            success: true
+                        })
+                    }
+                })
+                .catch((error) => {
+                    this.setState({
+                        loading: false,
+                        loadingText: "",
+                        success: false
+                    })
+                });
+        } else {
+            this.setState({
+                activeStep: this.state.activeStep + 1
+            })
+        }
     };
 
     handleBack = () => {
@@ -378,8 +432,12 @@ class OnBoardApp extends Component {
 
     render() {
         const steps = ['Application Details', 'Micro Services', 'Micro Services Relationships', 'Splunk Details', 'Review'];
+        let redirectVar = null
+        if (this.state.success == true) redirectVar = <Redirect to={"/onboard/success"} />
         return (
             <div className="container" style={{ width: "90%", marginTop: "20px" }}>
+                {redirectVar}
+                <Loading loading={this.state.loading} loadingText={this.state.loadingText} />
                 <Stepper activeStep={this.state.activeStep} alternativeLabel style={{ display: "flex", height: "20", boxShadow: "0 2px 5px rgba(0,0,0,0.3)" }}>
                     {steps.map((label) => (
                         <Step key={label} style={{ fontSize: "30px !important" }}>
@@ -404,7 +462,7 @@ class OnBoardApp extends Component {
                                     >
                                         Back
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={this.handleNext}>
+                                    <Button disabled={this.validateDetails()} variant="contained" color="primary" onClick={this.handleNext}>
                                         {this.state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                     </Button>
                                 </div>

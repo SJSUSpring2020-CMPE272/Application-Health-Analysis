@@ -8,8 +8,8 @@ const microserviceSchema = new Schema({
         auto: true
     },
     name: { type: String, required: true },
-    applicationId: { type: mongoose.Schema.Types.ObjectId, ref: "applications" },
-    dependencies: { type: Array, required: true }
+    dependencies: { type: Array, required: true },
+    applicationId: { type: mongoose.Schema.Types.ObjectId, ref: "applications" }
 }, { collection: 'microservices' });
 
 const createModel = function () {

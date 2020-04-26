@@ -13,6 +13,7 @@ const companySchema = new Schema({
 }, { collection: 'companies' });
 
 const createModel = function () {
+    mongoose.model("companies", companySchema).createCollection()
     return mongoose.model("companies", companySchema)
 }
 
