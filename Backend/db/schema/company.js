@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const adminSchema = new Schema({
+const companySchema = new Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -10,10 +10,11 @@ const adminSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true }
-}, { collection: 'admin' });
+}, { collection: 'companies' });
 
 const createModel = function () {
-    return mongoose.model("admin", adminSchema)
+    mongoose.model("companies", companySchema).createCollection()
+    return mongoose.model("companies", companySchema)
 }
 
 module.exports.createModel = createModel;

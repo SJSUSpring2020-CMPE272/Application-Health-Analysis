@@ -19,17 +19,17 @@ const saveDocuments = async (modelObject, data, options) => {
     }
 }
 
-const updateField = async (modelObject, id, update) => {
+const updateField = async (modelObject, _id, update) => {
     try {
-        return await modelObject.findOneAndUpdate({ id }, update, { useFindAndModify: false });
+        return await modelObject.findOneAndUpdate({ _id }, update, { useFindAndModify: false });
     } catch (error) {
         logger.error("Error while updating data:" + error)
         throw new Error(error);
     }
 }
 
-const deleteDocument = async function (modelObject, id) {
-    const result = await modelObject.deleteOne({ id });
+const deleteDocument = async function (modelObject, _id) {
+    const result = await modelObject.deleteOne({ _id });
     return result;
 }
 
