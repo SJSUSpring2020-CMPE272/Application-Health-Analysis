@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const failueLogDetails = new Schema({
+const failueLogDetailsHistory = new Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -15,11 +15,11 @@ const failueLogDetails = new Schema({
     failedApi : { type : String , required : true },
     failedMicroervice : { type: mongoose.Schema.Types.ObjectId, ref: "microservices" },
     failureData : {type : Array , required : true }
-}, { collection: 'failueLogDetails' });
+}, { collection: 'failueLogDetailsHistory' });
 
 const createModel = function () {
-    mongoose.model("failueLogDetails", failueLogDetails).createCollection()
-    return mongoose.model("failueLogDetails", failueLogDetails)
+    mongoose.model("failueLogDetailsHistory", failueLogDetailsHistory).createCollection()
+    return mongoose.model("failueLogDetailsHistory", failueLogDetailsHistory)
 }
 
 module.exports.createModel = createModel;
