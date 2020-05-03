@@ -307,7 +307,7 @@ class OnBoardApp extends Component {
                             <TextField
                                 margin="dense"
                                 name="port"
-                                label="Splunk Port Eg: 8080"
+                                label="Splunk Port Eg: 8089"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
