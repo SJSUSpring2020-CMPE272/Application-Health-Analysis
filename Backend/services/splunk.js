@@ -40,6 +40,8 @@ service.login(function (err, success) {
     }
     console.log("Created saved search/report as alert: " + alert.name);
   });
+
+  
   service.savedSearches().fetch(function (err, savedSearches) {
     var firedAlertGroups = savedSearches.list();
     for (var a in firedAlertGroups) {
