@@ -13,7 +13,7 @@ const failueLogDetailsHistory = new Schema({
     successTime : { type : String , required : true },
     failureCount : {type : Number , required : true },
     failedApi : { type : String , required : true },
-    failedMicroervice : { type: mongoose.Schema.Types.ObjectId, ref: "microservices" },
+    failedMicroservice : { type: mongoose.Schema.Types.ObjectId, ref: "microservices" },
     failureData : {type : Array , required : true }
 }, { collection: 'failueLogDetailsHistory' });
 
