@@ -22,6 +22,7 @@ const connection = require('./db/connection');
 const auth = require('./routes/routes')
 const onboard = require('./routes/onboard');
 const webhook = require('./routes/onalert');
+const microserviceRoute = require('./routes/microservice');
 const application = require('./db/schema/application').createModel();
 const microservice = require('./db/schema/microservice').createModel();
 
@@ -33,6 +34,7 @@ async function initializeApplication() {
     app.use(auth)
     app.use(onboard)
     app.use(webhook)
+    app.use(microserviceRoute)
     app.listen(process.env.PORT || 8080, () => {
       logger.debug('App listening on port 8080');
     });
