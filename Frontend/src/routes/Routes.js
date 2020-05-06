@@ -6,6 +6,7 @@ import NavBar from '../components/navbar';
 import OnBoard from '../components/OnBoard';
 import OnBoardSuccess from '../components/OnBoardSuccess';
 import Application from '../components/application';
+import Projects from '../components/projects'
 
 class Routes extends Component {
   render() {
@@ -17,6 +18,7 @@ class Routes extends Component {
         <Route path="/onboard" exact component={OnBoard} />
         <Route path="/onboard/success" exact component={OnBoardSuccess} />
         <Route path="/application/:id" exact component={Application} />
+        <Route path="/projects" component={Projects} exact />
       </div>
     );
   }
