@@ -16,7 +16,7 @@ class Routes extends Component {
         <Route path="/signup" component={SignUp} exact />
         <Route path="/onboard" exact component={OnBoard} />
         <Route path="/onboard/success" exact component={OnBoardSuccess} />
-        <Route path="/projects" component={Projects} exact />
+        <Route path="/applications" component={Projects} exact />
       </div>
     );
   }

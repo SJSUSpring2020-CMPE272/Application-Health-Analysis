@@ -11,15 +11,45 @@ import Avatar from '@material-ui/core/Avatar';
 import microservice from '../components/images/microservice.png';
 import BatteryChargingFullIcon from '@material-ui/icons/BatteryChargingFull';
 import Rating from '@material-ui/lab/Rating';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class Projects extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeIndex: 0
+            activeIndex: 0,
+            projects: [],
+            displayProjects: [],
+            sliderValue: 0
         }
+        this.searchtextChangeHandler = this.searchtextChangeHandler.bind(this);
+        this.sliderChange = this.sliderChange.bind(this);
     }
     componentDidMount() {
+        let url = process.env.REACT_APP_BACKEND_URL + `/getapplications/${sessionStorage.getItem("id")}`;
+        axios.defaults.withCredentials = true;
+        axios.get(url)
+            .then(response => {
+                this.setState({
+                    projects: response.data,
+                    displayProjects: response.data
+                })
+
+                this.state.projects.map((project, index) => {
+                    var successCount = 0;
+                    project.microServicesdetails.map((microservice, index) => {
+                        if (microservice.success === true) {
+                            successCount = successCount + 1;
+                        }
+                    })
+                    project.health = ((successCount / project.microServicesdetails.length) * 100).toFixed(2)
+                })
+            }
+            )
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     onPieEnter = (data, index) => {
@@ -28,14 +58,73 @@ class Projects extends Component {
         });
     };
 
-    render() {
-        const data = [
-            { name: 'Amazon', value: 50, health: 90 },
-            { name: 'Flipkart', value: 50, health: 90 },
-            { name: 'Ebay', value: 50, health: 90 },
-            { name: 'Snapdeal', value: 50, health: 90 },
+    searchtextChangeHandler = (e) => {
+        let result = []
+        for (var i = 0; i < this.state.projects.length; i++) {
+            if (this.state.projects[i].name.toLowerCase().includes(e.target.value.toLowerCase())) {
+                result.push(this.state.projects[i])
+                this.setState({
+                    displayProjects: result
+                })
+            }
+        }
+        this.setState({
+            displayProjects: result
+        })
+    }
 
-        ];
+    searchtextChangeHandlerAuto = (e, value) => {
+        console.log(value)
+        if (value === null) {
+            this.setState({
+                displayProjects: this.state.projects
+            })
+            return
+        }
+        let result = []
+        for (var i = 0; i < this.state.projects.length; i++) {
+            if (this.state.projects[i].name.toLowerCase().includes(value.toLowerCase())) {
+                result.push(this.state.projects[i])
+                this.setState({
+                    displayProjects: result
+                })
+            }
+        }
+        this.setState({
+            displayProjects: result
+        })
+    }
+
+    sliderChange = (event, value) => {
+        this.setState({
+            sliderValue: value
+        })
+        this.filterProjects(value)
+    }
+
+    filterProjects = (value) => {
+        let result = []
+        this.state.projects.map(project => {
+            if (project.health >= value) {
+                result.push(project)
+            }
+        })
+        this.setState({
+            displayProjects: result
+        })
+    }
+
+    render() {
+        var data = [];
+        this.state.projects.map((project, index) => {
+            var successCount = 0;
+            project.microServicesdetails.map((microservice, index) => {
+                if (microservice.success === true) {
+                    successCount = successCount + 1;
+                }
+            })
+            data.push({ name: project.name, value: 500, health: ((successCount / project.microServicesdetails.length) * 100).toFixed(2) })
+        })
 
         const renderActiveShape = (props) => {
             const RADIAN = Math.PI / 180;
@@ -81,23 +170,21 @@ class Projects extends Component {
             );
         };
 
-        const dataBar = [
-            {
-                name: 'Amazon', Success: 5, Failure: 2
-            },
-            {
-                name: 'Flipkart', Success: 7, Failure: 2
-            },
-            {
-                name: 'Ebay', Success: 3, Failure: 2
-            },
-            {
-                name: 'Snapdeal', Success: 8, Failure: 2
-            },
-        ];
-        const top100Films = [
-            { title: 'The Shawshank Redemption', year: 1994 },
-        ];
+        var dataBar = [];
+        this.state.projects.map((project, index) => {
+            var successCount = 0;
+            project.microServicesdetails.map((microservice, index) => {
+                if (microservice.success === true) {
+                    successCount = successCount + 1;
+                }
+            })
+            dataBar.push({ name: project.name, Success: successCount, Failure: (project.microServicesdetails.length - successCount) })
+        })
+
+        const top100Films = [];
+        this.state.projects.map((project, index) => {
+            top100Films.push({ title: project.name })
+        })
 
         const PrettoSlider = withStyles({
             root: {
@@ -129,21 +216,25 @@ class Projects extends Component {
             },
         })(Slider);
 
+
+
         return (
             <div style={{ marginTop: "5px" }}>
                 <div className="col-md-7">
+
                     <div className="row">
+
                         <Card style={{ marginLeft: "10px" }}>
                             <div className="col-md-6">
                                 <div style={{ minHeight: "90px", maxHeight: "90px", marginLeft: "10px", marginTop: "10px" }}>
-                                    <p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500", marginBottom: "0px" }}>Search projects:</p>
+                                    <p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500", marginBottom: "0px" }}>Search Applications:</p>
                                     <div style={{ width: 300, marginTop: "-10px" }}>
-                                        <Autocomplete
+                                        <Autocomplete onChange={this.searchtextChangeHandlerAuto}
                                             id="free-solo-demo"
                                             freeSolo
                                             options={top100Films.map((option) => option.title)}
                                             renderInput={(params) => (
-                                                <TextField {...params} label="Project Name" margin="normal" variant="outlined" />
+                                                <TextField onChange={this.searchtextChangeHandler}  {...params} label="Application Name" margin="normal" variant="outlined" />
                                             )}
                                         />
                                     </div>
@@ -152,40 +243,76 @@ class Projects extends Component {
                             <div className="col-md-6">
                                 <div style={{ minHeight: "90px", maxHeight: "90px", marginLeft: "10px", marginTop: "10px" }}>
                                     <p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>Health range:</p>
-                                    <PrettoSlider style={{ width: "97%" }} valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={90} />
+                                    <PrettoSlider style={{ width: "97%"}} valueLabelDisplay="auto" aria-label="pretto slider" value={this.state.sliderValue} onChange={this.sliderChange} />
                                 </div>
                             </div>
                         </Card>
-                    </div>
-                    <div className="row" style={{ marginTop: "10px", minHeight: "470px", maxHeight: "470px", overflowY: "scroll" }}>
-                        <Card style={{ marginLeft: "10px", marginBottom: "2px" }}>
-                            <div className="col-md-10" style={{ margin: "10px" }}>
-                                <p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>Project Name</p>
-                                <p style={{ display: "inline" }}>
-                                    <Chip style={{ fontSize: "13px", color: "#5c5e5e", fontWeight: "500" }} variant="outlined" label="Microservice" avatar={<Avatar src={microservice} />} />
-                                </p>
-                                <p style={{ display: "inline", fontSize: "13px", color: "#5c5e5e", fontWeight: "500" }}>&nbsp;+5 others</p>
-                            </div>
-                            <div className="col-md-1" style={{ margin: "15px" }}>
 
-                                <Rating
-                                    style={{ marginTop: "10px" }}
-                                    defaultValue={0.8}
-                                    size="large"
-                                    style={{ color: "#dc5a32" }}
-                                    precision={0.1}
-                                    max={1}
-                                    readOnly={true}
-                                    icon={<BatteryChargingFullIcon style={{ fontSize: "60" }}
-                                        name="read-only" />}
-                                />
-                            </div>
-                        </Card>
                     </div>
+
+                    <div className="row" style={{ marginTop: "10px", minHeight: "470px", maxHeight: "470px", overflowY: "scroll" }}>
+
+                        {this.state.displayProjects.map((project, index) => {
+
+                            var microservices = [];
+                            var runningMicroservices = 0;
+
+                            project.microServicesdetails.map((microservice, index) => {
+
+                                microservices.push(microservice.name);
+
+                                if (microservice.success === true) {
+                                    runningMicroservices = runningMicroservices + 1
+                                }
+                            })
+                            return (
+                                <Card style={{ marginLeft: "10px", marginBottom: "2px" }}>
+
+                                    <div className="col-md-10" style={{ margin: "10px" }}>
+                                    <Link to={"/application/"+project._id} style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}><p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>{project.name}</p></Link>
+                                        <p style={{ display: "inline" }}>
+                                            {microservices.slice(0, 5).map((service, index) => {
+                                                return (<Chip style={{ fontSize: "13px", color: "#5c5e5e", fontWeight: "500", marginRight: "10px", marginBottom: "10px" }} variant="outlined" label={service} avatar={<Avatar src={microservice} />} />)
+                                            })}
+                                        </p>
+                                        {microservices.length > 5 ? <p style={{ display: "inline", fontSize: "13px", color: "#5c5e5e", fontWeight: "500" }}>&nbsp;+{microservices.length - 5} others</p> : ""}
+                                    </div>
+
+                                    <div className="col-md-1" style={{ margin: "15px" }}>
+
+                                        {(runningMicroservices / microservices.length) * 100 > 80 ? <Rating
+                                            style={{ marginTop: "10px" }}
+                                            defaultValue={0.8}
+                                            size="large"
+                                            style={{ color: "#dc5a32" }}
+                                            precision={0.1}
+                                            max={1}
+                                            readOnly={true}
+                                            icon={<BatteryChargingFullIcon style={{ fontSize: "60" }}
+                                                name="read-only" />}
+                                        /> : <Rating
+                                                style={{ marginTop: "10px" }}
+                                                defaultValue={0.8}
+                                                size="large"
+                                                style={{ color: "#fc8965" }}
+                                                precision={0.1}
+                                                max={1}
+                                                readOnly={true}
+                                                icon={<BatteryChargingFullIcon style={{ fontSize: "60" }}
+                                                    name="read-only" />}
+                                            />}
+                                    </div>
+                                </Card>
+                            )
+                        })}
+
+                    </div>
+
                 </div>
+
                 <div className="col-md-5">
                     <Card>
-                        <p style={{ fontSize: "20px", color: "#5c5e5e", margin: "0px", fontWeight: "500" }}><center>Projects Health</center></p>
+                        <p style={{ fontSize: "20px", color: "#5c5e5e", margin: "0px", fontWeight: "500" }}><center>Applications Health</center></p>
                         <PieChart width={500} height={250}>
                             <Pie
                                 activeIndex={this.state.activeIndex}
