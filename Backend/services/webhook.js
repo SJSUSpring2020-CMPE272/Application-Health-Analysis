@@ -58,7 +58,7 @@ const onSuccessAlert = async (request, response) => {
                 data: JSON.parse(request.body.result._raw).message.log
             }
         }
-        let microServiceName = JSON.parse(request.body.result._raw).message.status.split('_')[1];
+        let microServiceName = JSON.parse(request.body.result._raw).message.status.split('_')[2];
         let microServiceObj = await operations.findDocumentsByQuery(microservice, { name: microServiceName });
         let appObj = await operations.findDocumentsByQuery(application, { _id: microServiceObj[0].applicationId });
         var service = new splunkjs.Service(appObj[0].splunk)
@@ -102,7 +102,7 @@ const handleFailureAlert = async (logObject, microServiceName) => {
     session.startTransaction();
     try {
         let searchKey = logObject.searchKey.replace('FAILURE', 'SUCCESS');
-        searchKey = `*${logObject.failedApi}*${searchKey}*`;
+        searchKey = `${logObject.failedApi}  ${searchKey}*`;
         let microServiceObj = await operations.findDocumentsByQuery(microservice, { name: microServiceName });
         let logDetails = await operations.findDocumentsByQuery(failueLogDetails, { name: searchKey }, { failureCount: 1, _id: 1 });
         if (logDetails.length) {
@@ -150,7 +150,7 @@ const handleFailureAlert = async (logObject, microServiceName) => {
                 actions: 'webhook',
                 is_scheduled: true,
                 'action.webhook': '1',
-                'action.webhook.param.url': `${process.env.WEBHOOK}/onsuccessalert`,
+                'action.webhook.param.url': `${process.env.WEBHOOK_SUCCESS}`,
                 'action.email': false,
                 'action.email.sendresults': null,
                 'action.email.to': '',
