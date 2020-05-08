@@ -23,7 +23,7 @@ mail = async (options) => {
 //   const {result,full} = await send(options);
 const onAlert = async (request, response) => {
     try {
-        let microServiceName = JSON.parse(request.body.result._raw).message.status.split('_')[1];
+        let microServiceName = JSON.parse(request.body.result._raw).message.status.split('_')[2];
         let logObject = {
             searchKey: JSON.parse(request.body.result._raw).message.status,
             failedApi: JSON.parse(request.body.result._raw).message.api,
