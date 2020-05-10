@@ -6,4 +6,6 @@ router.post('/onalert', webhook.onAlert);
 
 router.post('/onsuccessalert', webhook.onSuccessAlert);
 
+router.post('/predictfailure/:applicationId',webhook.failurePrediction);
+
 module.exports = router;

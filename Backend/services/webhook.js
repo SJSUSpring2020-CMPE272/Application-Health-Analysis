@@ -87,7 +87,7 @@ const onSuccessAlert = async (request, response) => {
             failureData: failiedLogData[0].failureData
         }
         await operations.saveDocuments(failureLogDetailsHistory, historyObj, { runValidators: true })
-         return response.status(200).json({ "messasge": "done" });
+        return response.status(200).json({ "messasge": "done" });
 
     } catch (ex) {
         logger.error(ex);
@@ -109,7 +109,7 @@ const handleFailureAlert = async (logObject, microServiceName) => {
             let result = await operations.updateField(failueLogDetails, { _id: logDetails[0]._id }, { $set: { failureCount: logDetails[0].failureCount + 1 }, $push: { failureData: logObject.logData } });
         }
         else {
-             let appObj = await operations.findDocumentsByQuery(application, { _id: microServiceObj[0].applicationId });
+            let appObj = await operations.findDocumentsByQuery(application, { _id: microServiceObj[0].applicationId });
             let compObj = await operations.findDocumentsByQuery(company, { _id: appObj[0].companyId });
             let mailObj = {
                 to: compObj[0].email,
@@ -133,7 +133,7 @@ const handleFailureAlert = async (logObject, microServiceName) => {
                 failureData: [logObject.logData]
             }
             await operations.saveDocuments(failueLogDetails, historyObj, { runValidators: true });
-           var service = new splunkjs.Service(appObj[0].splunk)
+            var service = new splunkjs.Service(appObj[0].splunk)
             await service.login();
             var alertOptions = {
                 name: searchKey,
@@ -234,5 +234,92 @@ const handleFailureAlert = async (logObject, microServiceName) => {
 
 };
 
+const failurePrediction = async (request, response) => {
+    try {
+        let appdetails = await operations.findDocumentsByQuery(application, { _id: request.params.applicationId })
+
+        logger.debug(appdetails)
+        var service = await new splunkjs.Service({
+            username: appdetails[0].splunk.username,
+            password: appdetails[0].splunk.password,
+            scheme: appdetails[0].splunk.scheme,
+            host: appdetails[0].splunk.host,
+            port: appdetails[0].splunk.port
+        });
+
+        searchQuery = `search ${request.body.searchText} | timechart count | predict count`
+
+        logger.log(new Date())
+
+        await searchLog(service, searchQuery, '2020-04-13T23:18:59.000+00:00', (err, result) => {
+            if (err) {
+                throw createError(err)
+            } else {
+                let results = []
+                logger.log(result)
+                for (var element in result) {
+                    if (result[element].count === null)
+                        results.push(result[element])
+                }
+                // logger.debug(results)
+                return response.status(200).json(results);
+            }
+        })
+
+    } catch (ex) {
+        logger.error(ex);
+        const message = ex.message ? ex.message : 'Error while fetching Failure Prediction values';
+        const code = ex.statusCode ? ex.statusCode : 500;
+        return response.status(code).json({ message });
+    }
+};
+
+let searchLog = (service, searchQuery, searchFromTime, callback) => {
+
+    var searchParams = {
+        exec_mode: "blocking",
+        earliest_time: searchFromTime
+    };
+
+    service.search(
+        searchQuery,
+        searchParams,
+        function (err, job) {
+            if (err) {
+                callback(err, null)
+            } else {
+                job.fetch(function (err) {
+                    job.results({}, function (err, results) {
+                        // console.log(results)
+                        let result = []
+                        var fields = results.fields;
+                        var rows = results.rows;
+                        for (var i = 0; i < rows.length; i++) {
+                            var values = rows[i];
+                            let row = {}
+                            for (var j = 0; j < values.length; j++) {
+                                row[fields[j]] = values[j]
+                            }
+                            result.push(row)
+                        }
+                        callback(err, result)
+                    })
+                });
+            }
+        }
+    );
+}
+
+//   let searchresult = searchLog('search orders1 | timechart count | predict count', "2020-04-13T23:18:59.000+00:00",(err,result)=>{
+//     let results = []
+//     for(var element in result){
+//         if (result[element].count === null)
+//             results.push(result[element])
+//     }
+//     console.log(results)
+//   }
+//   )
+
+module.exports.failurePrediction = failurePrediction;
 module.exports.onAlert = onAlert;
 module.exports.onSuccessAlert = onSuccessAlert;

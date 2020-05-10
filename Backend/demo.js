@@ -4,10 +4,8 @@ var fetch = require('fetch')
 var service = new splunkjs.Service({
     username: "rakeshranjan", password: "rakeshranjan",
     scheme: "https",
-    // host: "localhost",
     host: "35.235.118.212",
-    port: "8089",
-    //   token : "8211b055-8f45-4cf9-bcfd-9c7c7c984b4b"
+    port: "8089"
   });
   
   
@@ -56,7 +54,6 @@ let searchLog = (searchQuery, searchFromTime,callback) => {
   let searchresult = searchLog('search orders1 | timechart count | predict count', "2020-04-13T23:18:59.000+00:00",(err,result)=>{
     let results = []
     for(var element in result){
-        // console.log(result[element].count)
         if (result[element].count === null)
             results.push(result[element])
     }
