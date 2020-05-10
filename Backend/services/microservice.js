@@ -114,12 +114,12 @@ const fetchMicroserviceHistory= async (request, response) => {
 
             let microServiceStatus = await operations.findDocumentsByQuery(failureLogDetails, { failedMicroservice: request.params.microserviceId })
 
-                // currentStatus = microServiceStatus.length?"":false
+            let microServiceHistory = await operations.findDocumentsByQuery(failureLogDetailsHistory, {failedMicroservice: request.params.microserviceId})
 
-            let microServiceHistory = await operations.findDocumentsByQuery(failureLogDetailsHistory, { failedMicroservice: request.params.microserviceId })
+            microServiceHistory1 =  _.chain(microServiceHistory).groupBy("name").map((value, key) => ({ name: key, history: value })).value()
 
-
-        return response.status(200).json({microServiceDetails:microService,currentStatus:microServiceStatus,history:microServiceHistory});
+            
+        return response.status(200).json({microServiceDetails:microService,currentStatus:microServiceStatus,history:microServiceHistory1});
 
     } catch (ex) {
         logger.error(ex);

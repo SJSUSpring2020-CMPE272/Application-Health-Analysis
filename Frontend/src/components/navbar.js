@@ -22,7 +22,7 @@ class NavBar extends Component {
             navBar = (
                 <ul class="nav navbar-nav navbar-right">
                     <li><Link to="/onboard" style={{ color: "black" }}><span class="glyphicon glyphicon-"></span><b>On-Board App</b></Link></li>
-                    <li><Link to="/projects" style={{ color: "black" }}><span class="glyphicon glyphicon-"></span><b>Projects</b></Link></li>
+                    <li><Link to="/applications" style={{ color: "black" }}><span class="glyphicon glyphicon-"></span><b>Applications</b></Link></li>
                     <li><Link to="/signin" onClick={this.handleLogout} style={{ color: "black" }}><span class="glyphicon glyphicon-log-out"></span> <b>Logout</b></Link></li>
                 </ul>
             )
