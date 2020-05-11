@@ -150,7 +150,7 @@ export default class Application extends Component {
         this.cy.nodes().style({ 'transition-property': 'spring', 'transition-duration': '5s' });
         this.cy.edges().style({ 'transition-property': 'spring', 'transition-duration': '5s' });
         this.cy.nodes().connectedEdges().style({ 'width': "1px", 'line-color': 'grey' });
-        this.cy.nodes().style({ 'font-size': "12px", 'color': "#4f4f4e", 'shape': 'circle', 'background-fit': "contain", 'background-image': "https://static.thenounproject.com/png/2324129-200.png", 'background-image-opacity': 0.3 });
+        this.cy.nodes().style({ 'font-size': "12px", 'color': "#4f4f4e", 'shape': 'circle' });
         this.cy.nodes('[success="false"]').style({ 'background-color': '#dc5a32', 'shape': 'circle' });
         this.cy.nodes('[success="true"]').style({ 'background-color': '#438f54' });
         this.cy.nodes('[success="false"]').connectedEdges().style({ 'line-color': '#dc5a32', 'width': "1px" });
