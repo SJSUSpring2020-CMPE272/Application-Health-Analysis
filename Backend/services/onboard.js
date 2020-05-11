@@ -62,7 +62,7 @@ const onboardApplication = async (request, response) => {
                 actions: 'webhook',
                 is_scheduled: true,
                 'action.webhook': '1',
-                'action.webhook.param.url': process.env.WEBHOOK || 'http://google.com',
+                'action.webhook.param.url': process.env.WEBHOOK_FAILURE || 'http://google.com',
                 'action.email': false,
                 'action.email.sendresults': null,
                 'action.email.to': '',
