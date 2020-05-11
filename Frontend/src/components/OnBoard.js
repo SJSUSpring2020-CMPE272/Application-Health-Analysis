@@ -396,7 +396,7 @@ class OnBoardApp extends Component {
                     "host": this.state.host,
                     "port": this.state.port
                 },
-                "companyId": sessionStorage.getItem("id"),
+                "companyId": localStorage.getItem("id"),
                 "dependencies": this.state.dependencies
             }
             let url = process.env.REACT_APP_BACKEND_URL + '/onboard';

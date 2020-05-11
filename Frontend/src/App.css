@@ -13,6 +13,15 @@
   }
 }
 
+.navcolor:hover{
+  background-color: #1b4a79 !important;
+}
+
+.navcolor:focus{
+  background-color: #1b4a79 !important;
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

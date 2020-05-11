@@ -5,6 +5,7 @@ import SignUp from '../components/signup';
 import NavBar from '../components/navbar';
 import OnBoard from '../components/OnBoard';
 import OnBoardSuccess from '../components/OnBoardSuccess';
+import Application from '../components/application';
 import Projects from '../components/projects'
 
 class Routes extends Component {
@@ -16,6 +17,7 @@ class Routes extends Component {
         <Route path="/signup" component={SignUp} exact />
         <Route path="/onboard" exact component={OnBoard} />
         <Route path="/onboard/success" exact component={OnBoardSuccess} />
+        <Route path="/application/:id" exact component={Application} />
         <Route path="/applications" component={Projects} exact />
       </div>
     );

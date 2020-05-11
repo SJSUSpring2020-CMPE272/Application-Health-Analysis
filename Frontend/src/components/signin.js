@@ -25,9 +25,9 @@ class SignIn extends Component {
         axios.get(url)
             .then(response => {
                 if (response.status === 200) {
-                    sessionStorage.setItem("email", this.state.email);
-                    sessionStorage.setItem("id", response.data._id);
-                    sessionStorage.setItem("name", response.data.name);
+                    localStorage.setItem("email", this.state.email);
+                    localStorage.setItem("id", response.data._id);
+                    localStorage.setItem("name", response.data.name);
                     this.setState({
                         invalidCredentials: false
                     })
@@ -71,11 +71,11 @@ class SignIn extends Component {
 
     render() {
         let home = null;
-        if (sessionStorage.getItem("email") !== null) {
-            home = <Redirect to={"/projects"} />
+        if (localStorage.getItem("email") !== null) {
+            home = <Redirect to={"/applications"} />
         }
         return (
-            <div style={{ marginTop: "40px", overflowX: "hidden" }}>
+            <div style={{ marginTop: "40px", overflowX: "hidden"}}>
                 {home}
                 <div class="container" style={{ width: "400px", backgroundColor: "white", borderRadius: "7px", padding: "30px 40px 30px" }}>
                     <div class="login-form">
