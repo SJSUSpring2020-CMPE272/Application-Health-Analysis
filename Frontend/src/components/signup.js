@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import splunk from '../components/images/background.jpeg';
 import { Redirect } from 'react-router';
 
 class SignUp extends Component {
@@ -133,9 +134,9 @@ class SignUp extends Component {
         let redirectToSignIn = null;
         if (this.state.redirectToSignIn) redirectToSignIn = <Redirect to="/signin" />
         return (
-            <div style={{ marginTop: "20px", overflowX: "hidden" }}>
+            <div style={{ overflowX: "hidden", backgroundImage: `url(${splunk})` }}>
                 {redirectToSignIn}
-                <div class="container" style={{ width: "420px", backgroundColor: "white", borderRadius: "7px", padding: "20px 40px 10px" }}>
+                <div class="container" style={{  marginTop: "30px", marginBottom:"140px", width: "420px", backgroundColor: "white", borderRadius: "7px", padding: "20px 40px 10px" }}>
                     <div class="login-form ">
                         <div class="main-div">
                             <div class="panel" style={{marginBottom:"30px"}}>
