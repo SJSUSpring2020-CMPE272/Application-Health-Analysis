@@ -10,21 +10,17 @@ const operations = require('../db/operations');
 
 const fetchMicroserviceData = async (request, response) => {
     try {
-        console.log(request);
-
         let microServices = await operations.findDocumentsByQuery(microservice, { applicationId: request.params.applicationId })
-
         let MicroserviceData = []
-
         for (var element in microServices) {
             logger.log(microServices[element])
             var status = true
             var dependencies = microServices[element].dependencies
             let microServiceStatus = await operations.findDocumentsByQuery(failureLogDetails, { failedMicroservice: microServices[element]._id })
             if (microServiceStatus.length) {
-                status = false
+                status = "false"
             } else {
-                status = true
+                status = "true"
             }
             MicroserviceData.push({
                 data: {
@@ -45,10 +41,7 @@ const fetchMicroserviceData = async (request, response) => {
                 })
             }
         };
-
-        logger.log(MicroserviceData)
-
-        return response.status(200).json({ "Microservicedetails": MicroserviceData });
+        return response.status(200).json( MicroserviceData );
 
     } catch (ex) {
         logger.error(ex);
@@ -116,7 +109,7 @@ const fetchMicroserviceHistory= async (request, response) => {
 
             let microServiceHistory = await operations.findDocumentsByQuery(failureLogDetailsHistory, {failedMicroservice: request.params.microserviceId})
 
-            microServiceHistory1 =  _.chain(microServiceHistory).groupBy("name").map((value, key) => ({ name: key, history: value })).value()
+            microServiceHistory1 =  _.chain(microServiceHistory).groupBy("failedApi").map((value, key) => ({ name: key, history: value })).value()
 
             
         return response.status(200).json({microServiceDetails:microService,currentStatus:microServiceStatus,history:microServiceHistory1});

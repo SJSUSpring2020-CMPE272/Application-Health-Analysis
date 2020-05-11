@@ -13,6 +13,7 @@ import BatteryChargingFullIcon from '@material-ui/icons/BatteryChargingFull';
 import Rating from '@material-ui/lab/Rating';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Loading from './loading';
 
 class Projects extends Component {
     constructor(props) {
@@ -21,19 +22,22 @@ class Projects extends Component {
             activeIndex: 0,
             projects: [],
             displayProjects: [],
-            sliderValue: 0
+            sliderValue: 0,
+            loading: false
         }
         this.searchtextChangeHandler = this.searchtextChangeHandler.bind(this);
         this.sliderChange = this.sliderChange.bind(this);
     }
     componentDidMount() {
-        let url = process.env.REACT_APP_BACKEND_URL + `/getapplications/${sessionStorage.getItem("id")}`;
+        this.setState({ loading: true })
+        let url = process.env.REACT_APP_BACKEND_URL + `/getapplications/${localStorage.getItem("id")}`;
         axios.defaults.withCredentials = true;
         axios.get(url)
             .then(response => {
                 this.setState({
                     projects: response.data,
-                    displayProjects: response.data
+                    displayProjects: response.data,
+                    loading: false
                 })
 
                 this.state.projects.map((project, index) => {
@@ -220,6 +224,7 @@ class Projects extends Component {
 
         return (
             <div style={{ marginTop: "5px" }}>
+                <Loading loading={this.state.loading} />
                 <div className="col-md-7">
 
                     <div className="row">
@@ -243,7 +248,7 @@ class Projects extends Component {
                             <div className="col-md-6">
                                 <div style={{ minHeight: "90px", maxHeight: "90px", marginLeft: "10px", marginTop: "10px" }}>
                                     <p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>Health range:</p>
-                                    <PrettoSlider style={{ width: "97%"}} valueLabelDisplay="auto" aria-label="pretto slider" value={this.state.sliderValue} onChange={this.sliderChange} />
+                                    <PrettoSlider style={{ width: "97%" }} valueLabelDisplay="auto" aria-label="pretto slider" value={this.state.sliderValue} onChange={this.sliderChange} />
                                 </div>
                             </div>
                         </Card>
@@ -267,15 +272,14 @@ class Projects extends Component {
                             })
                             return (
                                 <Card style={{ marginLeft: "10px", marginBottom: "2px" }}>
-
                                     <div className="col-md-10" style={{ margin: "10px" }}>
-                                    <Link to={"/application/"+project._id} style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}><p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>{project.name}</p></Link>
+                                        <Link to={{ pathname: "/application/" + project._id, state: { application: project.name, key: project.key } }} style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}><p style={{ fontSize: "17px", color: "#5c5e5e", fontWeight: "500" }}>{project.name}</p></Link>
                                         <p style={{ display: "inline" }}>
-                                            {microservices.slice(0, 5).map((service, index) => {
+                                            {microservices.slice(0, 9).map((service, index) => {
                                                 return (<Chip style={{ fontSize: "13px", color: "#5c5e5e", fontWeight: "500", marginRight: "10px", marginBottom: "10px" }} variant="outlined" label={service} avatar={<Avatar src={microservice} />} />)
                                             })}
                                         </p>
-                                        {microservices.length > 5 ? <p style={{ display: "inline", fontSize: "13px", color: "#5c5e5e", fontWeight: "500" }}>&nbsp;+{microservices.length - 5} others</p> : ""}
+                                        {microservices.length > 9 ? <p style={{ display: "inline", fontSize: "13px", color: "#5c5e5e", fontWeight: "500" }}>&nbsp;+{microservices.length - 9} others</p> : ""}
                                     </div>
 
                                     <div className="col-md-1" style={{ margin: "15px" }}>
@@ -310,7 +314,7 @@ class Projects extends Component {
 
                 </div>
 
-                <div className="col-md-5">
+                <div className="col-md-5" style={{ paddingLeft: "5px" }}>
                     <Card>
                         <p style={{ fontSize: "20px", color: "#5c5e5e", margin: "0px", fontWeight: "500" }}><center>Applications Health</center></p>
                         <PieChart width={500} height={250}>
