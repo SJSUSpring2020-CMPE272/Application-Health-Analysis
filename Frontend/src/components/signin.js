@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
-
+import splunk from '../components/images/background.jpeg';
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -25,9 +25,9 @@ class SignIn extends Component {
         axios.get(url)
             .then(response => {
                 if (response.status === 200) {
-                    sessionStorage.setItem("email", this.state.email);
-                    sessionStorage.setItem("id", response.data._id);
-                    sessionStorage.setItem("name", response.data.name);
+                    localStorage.setItem("email", this.state.email);
+                    localStorage.setItem("id", response.data._id);
+                    localStorage.setItem("name", response.data.name);
                     this.setState({
                         invalidCredentials: false
                     })
@@ -71,15 +71,15 @@ class SignIn extends Component {
 
     render() {
         let home = null;
-        if (sessionStorage.getItem("email") !== null) {
-            home = <Redirect to={"/projects"} />
+        if (localStorage.getItem("email") !== null) {
+            home = <Redirect to={"/applications"} />
         }
         return (
-            <div style={{ marginTop: "40px", overflowX: "hidden" }}>
+            <div style={{ overflowX: "hidden", backgroundImage: `url(${splunk})` }}>
                 {home}
-                <div class="container" style={{ width: "400px", backgroundColor: "white", borderRadius: "7px", padding: "30px 40px 30px" }}>
+                <div class="container" style={{ marginTop: "40px",marginBottom:"193px", width: "400px", backgroundColor: "", borderRadius: "7px", padding: "30px 40px 30px" }}>
                     <div class="login-form">
-                        <div class="panel" style={{marginBottom:"30px"}}>
+                        <div class="panel" style={{ marginBottom: "30px", opacity:"0%" }}>
                             <h2 style={{ textAlign: "center" }}>Sign In</h2>
                         </div>
                         <form className="form" onSubmit={this.authenticateUser}>
@@ -89,7 +89,7 @@ class SignIn extends Component {
                             <div class="form-group" style={{ "alignItems": "center" }}>
                                 {this.state.invalidEmail ? <span style={{ color: "red", "font-weight": "bold", "textAlign": "center" }}>Invalid Email Id. Please check</span> : ''}
                             </div>
-                            <div class="form-group" style={{marginBottom:"20px"}}>
+                            <div class="form-group" style={{ marginBottom: "20px" }}>
                                 <input type="password" onChange={this.passwordChangeHandler} class="form-control" name="password" placeholder="Password" required />
                             </div>
                             <div class="form-group" style={{ "alignItems": "center" }}>

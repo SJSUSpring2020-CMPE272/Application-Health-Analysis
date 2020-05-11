@@ -11,40 +11,41 @@ class NavBar extends Component {
         this.handleLogout = this.handleLogout.bind(this);
     }
     handleLogout = () => {
-        sessionStorage.removeItem("name");
-        sessionStorage.removeItem("email");
-        sessionStorage.removeItem("id");
+        localStorage.removeItem("name");
+        localStorage.removeItem("email");
+        localStorage.removeItem("id");
     }
 
     render() {
         let navBar = null;
-        if (sessionStorage.getItem("email") !== null) {
+        if (localStorage.getItem("email") !== null) {
             navBar = (
                 <ul class="nav navbar-nav navbar-right">
-                    <li><Link to="/onboard" style={{ color: "black" }}><span class="glyphicon glyphicon-"></span><b>On-Board App</b></Link></li>
-                    <li><Link to="/applications" style={{ color: "black" }}><span class="glyphicon glyphicon-"></span><b>Applications</b></Link></li>
-                    <li><Link to="/signin" onClick={this.handleLogout} style={{ color: "black" }}><span class="glyphicon glyphicon-log-out"></span> <b>Logout</b></Link></li>
+                    <li ><Link class="navcolor" style={{ color: "white" }}><b>Welcome {localStorage.getItem("name")}</b></Link></li>
+                    <li ><Link to="/onboard" class="navcolor" style={{ color: "white" }}><b>On-Board App</b></Link></li>
+                    <li><Link to="/applications" class="navcolor" style={{ color: "white" }}><b>Applications</b></Link></li>
+                    <li><Link to="/signin" class="navcolor" onClick={this.handleLogout} style={{ color: "white" }}><span class="glyphicon glyphicon-log-out"></span> <b>Logout</b></Link></li>
                 </ul>
             )
         } else {
             navBar = (
                 <ul class="nav navbar-nav navbar-right">
-                    <li><Link to="/signin" style={{ color: "black" }}><span class="glyphicon glyphicon-log-in"></span><b> Sign In</b></Link></li>
-                    <li><Link to="/signup" style={{ color: "black" }}><span class="glyphicon glyphicon-user"></span><b> Sign Up</b></Link></li>
+                    <li><Link to="/signin" class="navcolor" style={{ color: "white" }}><span class="glyphicon glyphicon-log-in"></span><b> Sign In</b></Link></li>
+                    <li><Link to="/signup" class="navcolor" style={{ color: "white" }}><span class="glyphicon glyphicon-user"></span><b> Sign Up</b></Link></li>
                 </ul>
             )
         }
         let redirectVar = null;
-        if (!sessionStorage.getItem("email")) {
+        if (!localStorage.getItem("email")) {
             redirectVar = <Redirect to="/signin" />
         }
         return (
             <div>
                 {redirectVar}
-                <nav class="navbar navbar-dark bg-dark" style={{ backgroundColor: "white", borderRadius: "0px", padding: "0px", margin: "0px", paddingTop: "3px", paddingBottom: "3px", boxShadow: "0 2px 5px rgba(0,0,0,0.3)" }}>
+                <nav class="navbar navbar-dark bg-dark" style={{ backgroundColor: "#1b4a79", borderRadius: "0px", padding: "0px", margin: "0px", paddingTop: "3px", paddingBottom: "3px", boxShadow: "0 2px 5px rgba(0,0,0,0.3)", color: "white" }}>
                     <div class="container-fluid">
                         <div class="navbar-header" style={{ display: "inline" }}>
-                            <b class="navbar-brand" style={{ color: "black", display: "inline" }}>
+                            <b class="navbar-brand" style={{ color: "white", display: "inline", paddingRight:"0px" }}>
                                 Application Health Analytics
                             </b>
                         </div>
