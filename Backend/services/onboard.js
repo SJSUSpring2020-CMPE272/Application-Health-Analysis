@@ -62,7 +62,7 @@ const onboardApplication = async (request, response) => {
                 actions: 'webhook',
                 is_scheduled: true,
                 'action.webhook': '1',
-                'action.webhook.param.url': process.env.WEBHOOK_FAILURE || 'http://google.com',
+                'action.webhook.param.url': process.env.WEBHOOK_FAILURE,
                 'action.email': false,
                 'action.email.sendresults': null,
                 'action.email.to': '',
@@ -125,6 +125,7 @@ const onboardApplication = async (request, response) => {
                 'dispatch.ttl': '2p',
                 dispatchAs: 'owner',
             };
+            console.log(process.env.WEBHOOK_FAILURE)
             await service.savedSearches().create(alertOptions)
         }
         await session.commitTransaction();
