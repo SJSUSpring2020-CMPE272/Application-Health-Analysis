@@ -255,7 +255,7 @@ class Projects extends Component {
 
                     </div>
 
-                    <div className="row" style={{ marginTop: "10px", minHeight: "470px", maxHeight: "470px", overflowY: "scroll" }}>
+                    <div className="row" style={{ marginTop: "5px", minHeight: "470px", maxHeight: "470px", overflowY: "scroll" }}>
 
                         {this.state.displayProjects.map((project, index) => {
 

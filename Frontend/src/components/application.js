@@ -290,7 +290,7 @@ export default class Application extends Component {
                                                                 <ExpansionPanelDetails style={{ backgroundColor: "#f7f9ff" }}>
                                                                     <Typography>
                                                                         <ReactJson
-                                                                            src={api.history[0]['failureData']}
+                                                                            src={api.history}
                                                                             collapsed={false}
                                                                             displayDataTypes={false}
                                                                             sortKeys={false}
